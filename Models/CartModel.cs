@@ -1,13 +1,13 @@
 namespace EcomMVC.Models
 {
-    public class Cart
-    {
-        public string? Id {get; set;}
-        public List<Item> Items {get; set;}
-        
-        public Cart(){
-            Items=new List<Item>();
-        }
+   public class CartItem
+{
+    public int Id { get; set; }
+    public string BuyerId { get; set; }
+    public ApplicationUser Buyer { get; set; }
+    public int ItemId { get; set; }
+    public Item Item { get; set; }
+    public int Quantity { get; set; }
+}
 
-    }
 }
