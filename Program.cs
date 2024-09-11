@@ -1,24 +1,24 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using EcomMVC.Data;  // Assuming the ApplicationDbContext is in the Data folder
-using EcomMVC.Models; // Assuming the ApplicationUser and models are in the Models folder
+using EcomMVC.Data;
+using EcomMVC.Data.Infrastructure;
+using EcomMVC.Data.Repositories;
+using EcomMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-
-// Configure Entity Framework Core with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Configure Identity
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+//     .AddEntityFrameworkStores<ApplicationDbContext>()
+//     .AddDefaultTokenProviders();
 
-// Add controllers with views
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -34,13 +34,23 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+dataSeeding();
 
-app.UseAuthentication(); // Add authentication
-app.UseAuthorization();  // Add authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();  // Maps the identity pages
+app.MapRazorPages(); // For Identity scaffolding
 
 app.Run();
+
+void dataSeeding()
+{
+     using (var scope = app.Services.CreateScope())
+     {
+        var DbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        DbInitializer.Initialize();
+     }
+}

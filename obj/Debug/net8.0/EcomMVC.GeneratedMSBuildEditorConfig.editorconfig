@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /home/prisanmagar/Desktop/dotnet/EcomMVC
 build_property._RazorSourceGeneratorDebug = 
 
+[/home/prisanmagar/Desktop/dotnet/EcomMVC/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/prisanmagar/Desktop/dotnet/EcomMVC/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -26,8 +30,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/prisanmagar/Desktop/dotnet/EcomMVC/Views/Product/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9JbmRleC5jc2h0bWw=
+[/home/prisanmagar/Desktop/dotnet/EcomMVC/Views/Item/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSXRlbS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/prisanmagar/Desktop/dotnet/EcomMVC/Views/Shared/Error.cshtml]
