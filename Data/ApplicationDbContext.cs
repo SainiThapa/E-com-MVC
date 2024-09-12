@@ -26,6 +26,19 @@ namespace EcomMVC.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+        base.OnModelCreating(modelBuilder);
+
+        // Identity entities composite keys
+        modelBuilder.Entity<IdentityUserLogin<int>>()
+        .HasKey(l => new { l.LoginProvider, l.ProviderKey });
+
+        modelBuilder.Entity<IdentityUserRole<int>>()
+        .HasKey(r => new { r.UserId, r.RoleId });
+
+        modelBuilder.Entity<IdentityUserToken<int>>()
+        .HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
+        // Custom entities keys
         modelBuilder.Entity<Item>()
         .HasKey(i => i.Id);
 
