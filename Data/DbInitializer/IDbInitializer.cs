@@ -8,6 +8,6 @@ namespace EcomMVC.Data.DbInitializer
 {
     public interface IDbInitializer
     {
-        void Initialize();
+        Task Initialize();
     }   
 }

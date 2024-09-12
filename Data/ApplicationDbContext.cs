@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EcomMVC.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using EcomMVC.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace EcomMVC.Data
 {
@@ -24,5 +24,13 @@ namespace EcomMVC.Data
         public DbSet<PaymentDetails> PaymentDetails { get; set; }
         public DbSet<Address> Addresses { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        modelBuilder.Entity<Item>()
+        .HasKey(i => i.Id);
+
+        modelBuilder.Entity<CartItem>()
+            .HasKey(c => c.ItemId);
+        }
     }
 }

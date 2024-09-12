@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.EntityFrameworkCore;
 using EcomMVC.Data;
 using EcomMVC.Data.Infrastructure;
 using EcomMVC.Data.Repositories;
+using EcomMVC.Data.DbInitializer;
 using EcomMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,11 +15,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddRazorPages();
 
-// builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-//     .AddEntityFrameworkStores<ApplicationDbContext>()
-//     .AddDefaultTokenProviders();
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddScoped<IDbInitializer, DbInitialize>();
+
+
+builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 
@@ -34,7 +40,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-dataSeeding();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -44,6 +49,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages(); // For Identity scaffolding
 
+dataSeeding();
 app.Run();
 
 void dataSeeding()

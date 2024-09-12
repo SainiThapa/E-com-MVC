@@ -23,13 +23,13 @@ namespace EcomMVC.Data.Repositories
             _roleManager= rolemanager;
         }
 
-        public User AuthenticateUser(string Username, string Password)
+        public async Task<User> AuthenticateUser(string Username, string Password)
         {
-            var result = _signInManager.PasswordSignInAsync(Username, Password,false, lockoutOnFailure: false);
+            var result =await _signInManager.PasswordSignInAsync(Username, Password,false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                var user=_userManager.FindByNameAsync(Username).Result;
-                var roles= _userManager.GetRolesAsync(user).Result;
+                var user=await _userManager.FindByNameAsync(Username);
+                var roles= await _userManager.GetRolesAsync(user);
                 user.Roles=roles.ToArray();
 
                 return user;
@@ -37,19 +37,19 @@ namespace EcomMVC.Data.Repositories
             return null;
         }
 
-        public bool CreateUser(User user, string Password)
+        public async Task<bool> CreateUser(User user, string Password)
         {
             // Admin, User
 
-            var result = _userManager.CreateAsync(user,Password).Result;
-            if (result.Succeeded){
+            var result =await _userManager.CreateAsync(user,Password);
+            if (result.Succeeded)
+            {
                 string role ="User";
-                var res= _userManager.AddToRoleAsync(user,role).Result;
-                if(res.Succeeded)
-                {
-                    return true;
-                }
+                var res=await _userManager.AddToRoleAsync(user,role);
+                return res.Succeeded;   
             }
+            // If user creation fails, return false
+            return false;
         }
 
         public User GetUser(string Username)

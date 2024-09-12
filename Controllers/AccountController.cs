@@ -25,11 +25,11 @@ namespace EcomMVC.Controllers
 
         [HttpPost]
 
-        public IActionResult Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if(ModelState.IsValid)
             {
-                var user = _authRepository.AuthenticateUser(model.Email, model.Password);
+                var user =await _authRepository.AuthenticateUser(model.Email, model.Password);
                 if (user!=null)
                 {
                     if(!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -52,29 +52,29 @@ namespace EcomMVC.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult SignUp(UserViewModel model)
-        {
-             if(ModelState.IsValid)
+            [HttpPost]
+            public async Task <IActionResult> SignUp(UserViewModel model)
             {
-                User user =  new User{
-                    Name=model.Name,
-                    UserName =  model.Name,
-                    Email = model.Email,
-                    PhoneNumber=model.PhoneNumber
-                };
-                bool result = _authRepository.CreateUser(user,model.Password);
-                if(result)
+                if(ModelState.IsValid)
                 {
-                    return RedirectToAction("Login");
-                }
+                    User user =  new User{
+                        Name=model.Name,
+                        UserName =  model.Name,
+                        Email = model.Email,
+                        PhoneNumber=model.PhoneNumber
+                    };
+                    bool result =await _authRepository.CreateUser(user,model.Password);
+                    if(result)
+                    {
+                        return RedirectToAction("Login");
+                    }
+            }
+            return View();
         }
-        return View();
-    }
 
-        public async Task<IActionResult> SignOut()
+        public new IActionResult SignOut()
         {
-            await _authRepository.SignOut();
+            _authRepository.SignOut();
             return RedirectToAction("Index","Home");
         }
 

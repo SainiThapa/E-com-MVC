@@ -12,17 +12,17 @@ namespace EcomMVC.Data.DbInitializer
     public class DbInitialize: IDbInitializer
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly ApplicationDbContext _context;
 
-        public DbInitialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+        public DbInitialize(UserManager<User> userManager, RoleManager<Role> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
             try
             {
@@ -35,21 +35,21 @@ namespace EcomMVC.Data.DbInitializer
                 throw;
             }
 
-            if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+            if (!await _roleManager.RoleExistsAsync("Admin"))
             {
-                _roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole("User")).GetAwaiter().GetResult();
+                await _roleManager.CreateAsync(new Role {Name="Admin"});
+                await _roleManager.CreateAsync(new Role {Name="User"});
             
-            _userManager.CreateAsync(new User
+            await _userManager.CreateAsync(new User
             {
                 UserName="admin@gmail.com",
                 Email = "admin@gmail.com",
                 Name="Admin",
                 PhoneNumber="012223922"
-            }, "Admin@123").GetAwaiter().GetResult();
+            }, "Admin@123");
 
-            User user = _context.Users.FirstOrDefault(x=>x.Email=="admin@gmail.com");
-            _userManager.AddToRoleAsync(user,"Admin").GetAwaiter().GetResult();
+            User? user = await _context.Users.FirstOrDefaultAsync(x=>x.Email=="admin@gmail.com");
+            await _userManager.AddToRoleAsync(user,"Admin");
             }
             return;
         }

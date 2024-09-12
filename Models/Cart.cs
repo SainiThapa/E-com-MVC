@@ -2,11 +2,13 @@ namespace EcomMVC.Models
 {
     public class Cart
     {
-        public int? Id { get; set; }
-        public string? BuyerId { get; set; }
+        public Guid Id { get; set; }
+        public int BuyerId { get; set; }
         // public ApplicationUser? Buyer { get; set; }
 
         public bool isActive {get; set;} = true;
+
+        public DateTime CreatedDate{ get; set; }
         // public int? ItemId { get; set; }
         // public Item? Item { get; set; }
         

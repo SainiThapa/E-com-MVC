@@ -8,7 +8,10 @@ namespace EcomMVC.ViewModel{
 
         public decimal Total { get; set; }
 
+        public DateTime CreatedDate { get; set;}
         public decimal Tax { get; set; }
+
+        public int Quantity { get; set;}
         public decimal GrandTotal { get; set; }
         public IList<ItemViewModel> Items { get; set; } = new List<ItemViewModel>();
     }

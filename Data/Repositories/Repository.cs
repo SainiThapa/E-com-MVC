@@ -28,7 +28,8 @@ namespace EcomMVC.Data.Repositories
         }
         public T Find (object Id)
         {
-            return _dbContext.Set<T>().Find(Id);
+
+            return _dbContext.Set<T>().Find(Id)?? throw new InvalidOperationException("Entity not found");
         } 
 
         public IEnumerable<T> GetAll(){
