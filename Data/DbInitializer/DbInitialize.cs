@@ -14,7 +14,6 @@ namespace EcomMVC.Data.DbInitializer
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly ApplicationDbContext _context;
-
         public DbInitialize(UserManager<User> userManager, RoleManager<Role> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -37,9 +36,11 @@ namespace EcomMVC.Data.DbInitializer
 
             if (!await _roleManager.RoleExistsAsync("Admin"))
             {
-                await _roleManager.CreateAsync(new Role {Name="Admin"});
-                await _roleManager.CreateAsync(new Role {Name="User"});
-            
+                Console.WriteLine("RoleExists not");
+                await _roleManager.CreateAsync(new Role {Name="Admin", Description = "SuperUser Role"});
+                await _roleManager.CreateAsync(new Role {Name="Merchant", Description = "Seller User"});
+                await _roleManager.CreateAsync(new Role {Name="User", Description = "Customer User"});
+
             await _userManager.CreateAsync(new User
             {
                 UserName="admin@gmail.com",
@@ -52,6 +53,26 @@ namespace EcomMVC.Data.DbInitializer
             await _userManager.AddToRoleAsync(user,"Admin");
             }
             return;
+
+            // Create the Admin user if it doesn't already exist
+            // if (await _userManager.FindByEmailAsync("admin@gmail.com") == null)
+            // {
+            //     User adminUser = new User
+            //     {
+            //         UserName = "admin@gmail.com",
+            //         Email = "admin@gmail.com",
+            //         Name = "Admin",
+            //         PhoneNumber = "012223922"
+            //     };
+
+            //     // Create the admin user
+            //     var result = await _userManager.CreateAsync(adminUser, "Admin@123");
+            //     if (result.Succeeded)
+            //     {
+            //         // Add the admin user to the Admin role
+            //         await _userManager.AddToRoleAsync(adminUser, "Admin");
+            //     }
+            // }
         }
     }   
 }

@@ -23,7 +23,13 @@ builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>(
 builder.Services.AddScoped<IDbInitializer, DbInitialize>();
 
 
-builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<User, Role>(options => {
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.SignIn.RequireConfirmedEmail = false;
+})
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -51,6 +57,17 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages(); // For Identity scaffolding
+// Routing different endpoints
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+    
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 dataSeeding();
 app.Run();

@@ -22,14 +22,43 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                            {
+                            @* Additional Navigation Items *@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="AllItem">All Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="Cart">Shopping Cart</a>
+                            </li>
 
-                        @* Authentications *@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignUp">Signup</a>
-                        </li>
+                                @* Search Bar Visible Only When Authenticated *@
+                                <form class="d-flex" asp-area="" asp-controller="Item" asp-action="Search">
+                                    <input class="form-control me-2" type="search" name="query" placeholder="Search Products" aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                               @* Profile Dropdown *@
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="EditProfile">Edit Profile</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="ViewProfile">View Profile</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="SignOut">Logout</a></li>
+                                </ul>
+                            </li>
+
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignUp">Sign Up</a>
+                                </li>
+                            }
                     </ul>
                 </div>
             </div>

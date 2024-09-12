@@ -25,7 +25,7 @@ namespace EcomMVC.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl=null)
         {
             if(ModelState.IsValid)
             {
@@ -37,14 +37,32 @@ namespace EcomMVC.Controllers
 
                     if (user.Roles.Contains("Admin"))
                     {
-                        return RedirectToAction("Index","Dashboard", new{area = "Admin"});
+                        return RedirectToAction("Index","Dashboard", new {area = "Admin"});
                     }
-                    else if (user.Roles.Contains("User")){
-                        return RedirectToAction("Index","Dashboard", new{area="User"});
+                    else if (user.Roles.Contains("User"))
+                    {
+                        return RedirectToAction("Index","Home");
+                    }
+                     else
+                    {
+                        // If user creation failed, add a generic error message to the ModelState
+                        Console.WriteLine("User authentication failed");
+                        ModelState.AddModelError("", "Invalid Login credential. Please try again.");
                     }
                 }
             }
-            return View();
+            else
+            {
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var value = ModelState[modelStateKey];
+                    foreach (var error in value.Errors)
+                    {
+                        Console.WriteLine($"Error in {modelStateKey}: {error.ErrorMessage}");
+                    }
+                }
+            }
+            return View(model);
         }
 
         public IActionResult SignUp()
@@ -52,7 +70,7 @@ namespace EcomMVC.Controllers
             return View();
         }
 
-            [HttpPost]
+        [HttpPost]
             public async Task <IActionResult> SignUp(UserViewModel model)
             {
                 if(ModelState.IsValid)
@@ -64,13 +82,19 @@ namespace EcomMVC.Controllers
                         PhoneNumber=model.PhoneNumber
                     };
                     bool result =await _authRepository.CreateUser(user,model.Password);
+                    // Console.WriteLine(model.Email+" "+model.PhoneNumber+" "+model.Password);
                     if(result)
                     {
                         return RedirectToAction("Login");
                     }
+                    else
+                    {
+                        // If user creation failed, add a generic error message to the ModelState
+                        ModelState.AddModelError("", "Failed to create the account. Please try again.");
+                    }
+                }
+            return View(model);
             }
-            return View();
-        }
 
         public new IActionResult SignOut()
         {

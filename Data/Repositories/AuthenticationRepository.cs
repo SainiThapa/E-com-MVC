@@ -23,16 +23,23 @@ namespace EcomMVC.Data.Repositories
             _roleManager= rolemanager;
         }
 
-        public async Task<User> AuthenticateUser(string Username, string Password)
+        public async Task<User> AuthenticateUser(string email, string Password)
         {
-            var result =await _signInManager.PasswordSignInAsync(Username, Password,false, lockoutOnFailure: false);
-            if (result.Succeeded)
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user!=null)
             {
-                var user=await _userManager.FindByNameAsync(Username);
-                var roles= await _userManager.GetRolesAsync(user);
-                user.Roles=roles.ToArray();
+                var result =await _signInManager.PasswordSignInAsync(user.UserName, Password,false, lockoutOnFailure: false);
 
+            if (result.Succeeded)
+                {
+                // var user=await _userManager.FindByNameAsync(Username);
+                // if (user != null)
+                // {
+                // Fetch the user's roles
+                var roles = await _userManager.GetRolesAsync(user);
+                user.Roles = roles.ToArray();
                 return user;
+                }
             }
             return null;
         }
@@ -45,10 +52,15 @@ namespace EcomMVC.Data.Repositories
             if (result.Succeeded)
             {
                 string role ="User";
-                var res=await _userManager.AddToRoleAsync(user,role);
-                return res.Succeeded;   
+                var roleAssignResult=await _userManager.AddToRoleAsync(user,role);
+                return roleAssignResult.Succeeded;   
             }
             // If user creation fails, return false
+            foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"Error: {error.Code} - {error.Description}");
+                }
+            Console.WriteLine("Failed Asyncing");
             return false;
         }
 
