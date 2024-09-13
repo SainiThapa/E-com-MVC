@@ -12,10 +12,10 @@ namespace EcomMVC.ViewModel
         public required string Name { get; set;}
 
         [Required(ErrorMessage = "Enter Password")]
-        public required string Password { get; set;}
+        public string? Password { get; set;}
         
         [Compare("Password",ErrorMessage ="Password donot match")]
-        public string ConfirmPassword { get; set;}
+        public string? ConfirmPassword { get; set;}
 
         [Required(ErrorMessage ="Enter Phone number")]
         public string? PhoneNumber { get; set;}

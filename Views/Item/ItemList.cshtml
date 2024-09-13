@@ -1,0 +1,21 @@
+@model IEnumerable<EcomMVC.Models.Item>
+<link rel="stylesheet" href="~/css/item.css">
+
+<h2>Available Items</h2>
+
+<div class="grid-container">
+    @foreach (var item in Model)
+    {
+        
+            <a asp-action="Detail" asp-route-id="@item.Id" class="image-container">
+        <div class="grid-item">
+                <img src="@item.ImagePath" alt="@item.Name" class="product-image" />
+            <div class="item-details">
+                <h3>@item.Name</h3>
+                <div class="price">$@item.Price</div>
+                <div class="quantity">In Stock: @item.Quantity</div>
+            </div>
+        </div>
+            </a>
+    }
+</div>

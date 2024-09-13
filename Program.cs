@@ -5,6 +5,8 @@ using EcomMVC.Data.Infrastructure;
 using EcomMVC.Data.Repositories;
 using EcomMVC.Data.DbInitializer;
 using EcomMVC.Models;
+using Rotativa.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IDbInitializer, DbInitialize>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 
 builder.Services.AddIdentity<User, Role>(options => {
@@ -52,6 +57,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"); // This is where wkhtmltopdf should be
+RotativaConfiguration.Setup(rootPath);
+
 
 app.MapControllerRoute(
     name: "default",

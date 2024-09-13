@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "DTTTCg10+Bo=",
+  "dgSpecHash": "3BLxnvQAm0U=",
   "success": true,
   "projectFilePath": "/home/prisanmagar/Desktop/dotnet/EcomMVC/EcomMVC.csproj",
   "expectedPackageFiles": [
@@ -55,6 +55,7 @@
     "/home/prisanmagar/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/home/prisanmagar/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/home/prisanmagar/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
+    "/home/prisanmagar/.nuget/packages/rotativa.aspnetcore/1.3.2/rotativa.aspnetcore.1.3.2.nupkg.sha512",
     "/home/prisanmagar/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.6/sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
     "/home/prisanmagar/.nuget/packages/sqlitepclraw.core/2.1.6/sqlitepclraw.core.2.1.6.nupkg.sha512",
     "/home/prisanmagar/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.6/sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",

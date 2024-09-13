@@ -1,0 +1,12 @@
+@model EcomMVC.Models.Cart
+
+<h2>Cart Details</h2>
+
+<ul>
+    @foreach (var item in Model.Items)
+    {
+        <li>@item.Name - Quantity: @item.Quantity - Price: @item.Price</li>
+    }
+</ul>
+
+<p>Total: @Model.Items.Sum(i => i.Quantity * i.Price)</p>

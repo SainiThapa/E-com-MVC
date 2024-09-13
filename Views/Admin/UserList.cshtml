@@ -1,0 +1,25 @@
+@model IEnumerable<EcomMVC.Models.User>
+
+@{
+    ViewData["Title"] = "User List - Admin";
+}
+
+<h1>User List</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>

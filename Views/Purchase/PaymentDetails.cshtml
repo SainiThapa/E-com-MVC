@@ -1,0 +1,9 @@
+@model EcomMVC.Models.Cart
+
+<h2>Payment Confirmation</h2>
+
+<p>Your payment has been processed successfully.</p>
+
+<p><strong>Total Amount:</strong> $@Model.Items.Sum(i => i.Price * i.Quantity)</p>
+
+<a asp-action="OrderDetails" asp-route-orderId="@Model.Id" class="btn btn-primary">View Order Details</a>

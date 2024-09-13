@@ -17,40 +17,6 @@ namespace EcomMVC.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("EcomMVC.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Locality")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Zipcode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Addresses");
-                });
-
             modelBuilder.Entity("EcomMVC.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -120,8 +86,9 @@ namespace EcomMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("BuyerId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
@@ -165,28 +132,28 @@ namespace EcomMVC.Migrations
 
             modelBuilder.Entity("EcomMVC.Models.Item", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ImagePath")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SellerId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -199,35 +166,17 @@ namespace EcomMVC.Migrations
             modelBuilder.Entity("EcomMVC.Models.Order", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("City")
-                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Locality")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PaymentId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Zipcode")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -273,19 +222,7 @@ namespace EcomMVC.Migrations
                     b.Property<Guid>("CartId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal>("FinalTotal")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Tax")
@@ -519,9 +456,7 @@ namespace EcomMVC.Migrations
                 {
                     b.HasOne("EcomMVC.Models.ApplicationUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SellerId");
 
                     b.Navigation("Seller");
                 });

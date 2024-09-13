@@ -5,7 +5,7 @@ namespace EcomMVC.ViewModel{
     {
         public string Id{ get; set; }
         public string PaymentId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string Currency { get; set; }
         public decimal Total { get; set; }
         public decimal Tax { get; set; }

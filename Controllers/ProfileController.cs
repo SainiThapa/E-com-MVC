@@ -2,11 +2,20 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using EcomMVC.Models;
 using EcomMVC.ViewModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace EcomMVC.Controllers;
 
 public class ProfileController : Controller
 {
+    private readonly UserManager<User> _userManager;
+
+
+    public ProfileController(UserManager<User> userManager)
+    {
+        _userManager = userManager;
+    }
+    
     [HttpGet]
 public async Task<IActionResult> ViewProfile()
 {
@@ -46,7 +55,7 @@ public async Task<IActionResult> EditProfile()
 }
 
 [HttpPost]
-public async Task<IActionResult> EditProfile(UserViewModel model)
+public async Task<IActionResult> EditProfile(ProfileViewModel model)
 {
     if (ModelState.IsValid)
     {

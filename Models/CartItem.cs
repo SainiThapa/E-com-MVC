@@ -4,7 +4,7 @@ namespace EcomMVC.Models
 {
     public class CartItem
     {
-        public int ItemId {get; set;}
+        public int   ItemId {get; set;}
         public int Quantity {get; set;}
         public decimal Price {get; set;}
         public string Name {get; set;}
@@ -12,7 +12,7 @@ namespace EcomMVC.Models
    // Parameterless constructor for EF
         public CartItem() { }
 
-    // Factory method
+    // Factory method   
         public CartItem (int itemId, int quantity, decimal price, string name)
         {
                 ItemId = itemId;

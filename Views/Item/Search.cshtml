@@ -1,0 +1,26 @@
+@model IEnumerable<EcomMVC.Models.Item>
+
+<h2>Search Results</h2>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-3">
+            <div class="card h-100" style="cursor: pointer;" onclick="location.href='@Url.Action("Detail", "Item", new { id = item.Id })';">
+                    <img src="@Url.Content(item.ImagePath)" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <strong>Price: </strong>$@item.Price
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No products found for the given search query.</p>
+}

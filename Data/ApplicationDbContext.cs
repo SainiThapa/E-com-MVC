@@ -22,13 +22,10 @@ namespace EcomMVC.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<PaymentDetails> PaymentDetails { get; set; }
-        public DbSet<Address> Addresses { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         base.OnModelCreating(modelBuilder);
 
-        // Identity entities composite keys
         modelBuilder.Entity<IdentityUserLogin<int>>()
         .HasKey(l => new { l.LoginProvider, l.ProviderKey });
 
@@ -38,12 +35,18 @@ namespace EcomMVC.Data
         modelBuilder.Entity<IdentityUserToken<int>>()
         .HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
 
-        // Custom entities keys
         modelBuilder.Entity<Item>()
         .HasKey(i => i.Id);
 
         modelBuilder.Entity<CartItem>()
             .HasKey(c => c.ItemId);
+
+        modelBuilder.Entity<Order>()
+        .HasKey(o => o.Id);
+
+        modelBuilder.Entity<Order>()
+        .Property(o => o.Id)
+        .ValueGeneratedOnAdd(); 
         }
     }
 }

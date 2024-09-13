@@ -18,32 +18,41 @@ namespace EcomMVC.Data.Repositories
         {
             _context = dbContext;
         }
-        public OrderViewModel GetOrderDetails(string Id)
+        public OrderViewModel GetOrderDetails(string orderId)
         {
-            var orderViewmodel = (from order in _context.Orders
-                                    where order.Id ==Id
-                                    select new OrderViewModel
-                                    {
-                                        Id=order.Id,
-                                        UserId=order.UserId,
-                                        CreatedDate=order.CreatedDate,
-                                        Items=(from orderItem in _context.OrderItems
-                                                join item in _context.Items
-                                                on orderItem.ItemId equals item.Id
-                                                where orderItem.OrderId==Id
-                                                select new ItemViewModel
-                                                {
-                                                    Id=orderItem.Id,
-                                                    Name=item.Name,
-                                                    Description=item.Description,
-                                                    ImagePath = item.ImagePath,
-                                                    Quantity=orderItem.Quantity,
-                                                    ItemId=item.Id,
-                                                    Price=orderItem.Price,
-                                                }).ToList()
-                                    }).FirstOrDefault();
-            return orderViewmodel;
+            // Retrieve the order
+            var order = _context.Orders
+                                .FirstOrDefault(o => o.Id == orderId);
+            if (order == null)
+            {
+                return null;
+            }   
+            var orderItems = _context.OrderItems
+                                    .Where(oi => oi.OrderId == orderId)
+                                    .Join(_context.Items, 
+                                        orderItem => orderItem.ItemId, 
+                                        item => item.Id, 
+                                        (orderItem, item) => new ItemViewModel
+                                        {
+                                            Id = orderItem.Id,
+                                            Name = item.Name,
+                                            Description = item.Description,
+                                            ImagePath = item.ImagePath,
+                                            Quantity = orderItem.Quantity,
+                                            ItemId = item.Id,
+                                            Price = orderItem.Price
+                                        })
+                                    .ToList();
+            var orderViewModel = new OrderViewModel
+            {
+                Id = order.Id,
+                UserId = order.UserId,
+                CreatedDate = order.CreatedDate,
+                Items = orderItems
+            };
+            return orderViewModel;
         }
+
 
         public PagingList<OrderViewModel> GetOrderList (int page, int pageSize)
         {
@@ -58,7 +67,6 @@ namespace EcomMVC.Data.Repositories
                             PaymentId = payment.Id,
                             CreatedDate =  order.CreatedDate,
                             GrandTotal = payment.FinalTotal,
-                            Locality = order.Locality
                         });
             int itemCounts = data.Count();
             var orders = data.Skip((page-1)*pageSize).Take(pageSize);
@@ -69,12 +77,21 @@ namespace EcomMVC.Data.Repositories
             pagingViewModel.TotalItems=itemCounts;
             return pagingViewModel;
         }
-
-        public IEnumerable <Order> GetOrders (int UserId)
+        public void Add(Order order)
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+        }
+        public IEnumerable <Order> GetOrders (string UserId)
         {
             return _context.Orders
             .Include(o => o.OrderItems)
             .Where(x => x.UserId ==UserId).ToList();
+        }
+
+            public IEnumerable<Order> GetAllOrders()
+        {
+            return _context.Orders.ToList();
         }
     }
 }

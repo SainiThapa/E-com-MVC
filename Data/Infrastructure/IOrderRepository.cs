@@ -10,8 +10,10 @@ namespace EcomMVC.Data.Infrastructure
 {
     public interface IOrderRepository:IRepository<Order>
     {
-        IEnumerable<Order> GetOrders(int UserId);
+        IEnumerable<Order> GetOrders(string UserId);
         OrderViewModel GetOrderDetails(string id);
         PagingList<OrderViewModel> GetOrderList(int page, int pageSize);
+        IEnumerable<Order> GetAllOrders();
+
     }
 }

@@ -1,0 +1,33 @@
+@model EcomMVC.ViewModel.OrderViewModel
+
+<h2>Thank you for purchasing our products!</h2>
+
+<p>Your order has been placed successfully. You will receive your order within 5-7 business days. Below are the details of your order:</p>
+
+<div class="card">
+    <div class="card-body">
+        <h5>Order ID: @Model.Id</h5>
+        <p><strong>Order Date:</strong> @Model.CreatedDate.ToString("MM/dd/yyyy")</p>
+        <p><strong>User ID:</strong> @Model.UserId</p>
+
+        <h5>Items</h5>
+        <ul class="list-group">
+            @foreach (var item in Model.Items)
+            {
+                <li class="list-group-item">
+                    <strong>@item.Name</strong><br />
+                    Description: @item.Description<br />
+                    Quantity: @item.Quantity<br />
+                    Price: $@item.Price<br />
+                    Total: $@(item.Price * item.Quantity)
+                </li>
+            }
+        </ul>
+
+        <p><strong>Grand Total:</strong> $ @Model.Items.Sum(i => i.Price * i.Quantity)</p>
+
+        <form asp-action="DownloadPdf" method="post">
+            <input type="hidden" name="orderId" value="@Model.Id" />
+            <button type="submit" class="btn btn-primary mt-3">Download Order Details (PDF)</button>
+        </form>    </div>
+</div>

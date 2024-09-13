@@ -18,6 +18,11 @@ namespace EcomMVC.Data.Repositories
         {
             _context = dbContext;
         }
+        public void Add(Cart cart)
+        {
+            _context.Carts.Add(cart);
+            _context.SaveChanges();
+        }
         public int Delete(Guid cartId, int itemId){
             var item = _context.CartItems.Where(x=>x.CartId == cartId && x.Id==itemId).FirstOrDefault();
             if(item!=null)
@@ -30,6 +35,17 @@ namespace EcomMVC.Data.Repositories
                 return 0;
             }
         }
+        
+        public int ClearCart(Guid cartId)
+        {
+            var cartItems = _context.CartItems.Where(x => x.CartId == cartId).ToList();
+            if (cartItems != null && cartItems.Any())
+            {
+                _context.CartItems.RemoveRange(cartItems);
+                return _context.SaveChanges();
+            }
+            return 0;
+        }
 
         // public Cart GetCartById(Guid cartId)
         // {
@@ -38,6 +54,11 @@ namespace EcomMVC.Data.Repositories
         //     return cart;
             
         // }
+
+        public Cart GetCartByUserId(string userId)
+        {
+            return _context.Carts.FirstOrDefault(c => c.BuyerId == userId && c.isActive);
+        }
         public Cart GetCartById(Guid cartId)
         {
             var cart = _context.Carts
@@ -76,34 +97,86 @@ namespace EcomMVC.Data.Repositories
             return cartViewModel;
         }
 
-        public int UpdateCart(Guid cartId, int userId)
+        public int UpdateCart(Guid cartId, string userId)
         {
             Cart cartfromDb = GetCartById(cartId);
             cartfromDb.BuyerId=userId;
             return _context.SaveChanges();
         }
 
-        public int UpdateQty(Guid cartId, int itemId, int Quantity)
+        // public int UpdateQty(Guid cartId, int itemId, int Quantity)
+        // {
+        //     bool flag = false;
+        //     var cartfromDb = GetCartById(cartId);
+        //     if (cartfromDb!=null)
+        //     {
+        //         for (int i=0; i<cartfromDb.Items.Count; i++)
+        //         {
+        //             if (cartfromDb.Items[i].Id ==itemId)
+        //             {
+        //                 flag = true;
+        //                 if (Quantity>0)
+        //                     cartfromDb.Items[i].Quantity +=(Quantity);
+        //                 break;
+        //             }
+        //         }
+        //         if (flag){
+        //             return _context.SaveChanges();
+        //         }
+        //     }
+        //     return 0;
+        // } 
+
+        public int UpdateQty(Guid cartId, int itemId, int quantity)
         {
-            bool flag = false;
-            var cartfromDb = GetCartById(cartId);
-            if (cartfromDb!=null)
+            bool itemExists = false;
+            var cart = GetCartById(cartId);
+
+            if (cart != null)
             {
-                for (int i=0; i<cartfromDb.Items.Count; i++)
+                _context.Attach(cart);
+
+                // Check if the item already exists in the cart
+                foreach (var cartItem in cart.Items)
                 {
-                    if (cartfromDb.Items[i].Id ==itemId)
+                    if (cartItem.ItemId == itemId)
                     {
-                        flag = true;
-                        if (Quantity>0)
-                            cartfromDb.Items[i].Quantity +=(Quantity);
+                        itemExists = true;
+                        if(quantity>0)
+                        {
+
+                        cartItem.Quantity += quantity; // Update quantity if item exists
+                        _context.Entry(cartItem).State = EntityState.Modified; // Mark as modified
+                        }
                         break;
                     }
                 }
-                if (flag){
-                    return _context.SaveChanges();
+
+                // If the item doesn't exist, create a new CartItem and add it to the cart
+                if (!itemExists)
+                {
+                    var item = _context.Items.FirstOrDefault(i => i.Id == itemId); // Find the item in the items table
+                    if (item != null)
+                    {
+                        CartItem newCartItem = new CartItem
+                        {
+                            ItemId = item.Id,
+                            Quantity = quantity,
+                            Price = item.Price,
+                            Name = item.Name,
+                            CartId = cartId
+                        };
+                        cart.Items.Add(newCartItem);
+                        _context.CartItems.Add(newCartItem); // Ensure the new CartItem is tracked by EF
+                    
+                    }
                 }
+
+                return _context.SaveChanges(); // Save the changes to the database
             }
+
             return 0;
-        } 
+        }
+
     }   
 }

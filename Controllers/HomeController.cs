@@ -12,12 +12,25 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-
-    public IActionResult Index()
+public IActionResult Index()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Check if the user is in the Admin role
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            // Check if the user is in the User role
+            else if (User.IsInRole("User"))
+            {
+                return RedirectToAction("Index", "Item");
+            }
+        }
+
+        // If not authenticated, go to the default Home Index
         return View();
     }
-
     public IActionResult Privacy()
     {
         return View();

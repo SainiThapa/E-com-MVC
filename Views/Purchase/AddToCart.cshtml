@@ -1,0 +1,8 @@
+@model EcomMVC.ViewModel.ItemViewModel
+
+<h2>Add to Cart Confirmation</h2>
+
+<p>You have successfully added the item to your cart.</p>
+
+<a asp-action="CartDetails" asp-route-cartId="@Model.Id" class="btn btn-primary">View Cart</a>
+<a asp-controller="Item" asp-action="Index" class="btn btn-secondary">Continue Shopping</a>

@@ -13,8 +13,13 @@ namespace EcomMVC.Data.Infrastructure
     {
         Cart GetCartById(Guid id);
         CartViewModel GetCartDetails (Guid CartId);
+        void Add(Cart cart);
+        int ClearCart(Guid cartId);
         int Delete (Guid cartId, int itemId);
         int UpdateQty (Guid cartId, int itemId, int Quanity);
-        int UpdateCart (Guid cartId, int userId);
+        int UpdateCart (Guid cartId, string userId);
+        Cart GetCartByUserId(string userId);
+
+
     }
 }

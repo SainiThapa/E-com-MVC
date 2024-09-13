@@ -1,26 +1,5 @@
+@model IEnumerable<EcomMVC.Models.Item>
+
 <h1>Admin Dashboard</h1>
-<p>Manage products and users</p>
-<table>
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Merchant</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.Name</td>
-                <td>@product.Price</td>
-                <td>@product.Merchant.Name</td>
-                <td>
-                    <a href="/Admin/EditProduct/@product.Id">Edit</a>
-                    <a href="/Admin/DeleteProduct/@product.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<p><a asp-controller="Item" asp-action="Index">Manage products and users</a></p>
+

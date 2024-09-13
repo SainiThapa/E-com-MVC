@@ -37,7 +37,7 @@ namespace EcomMVC.Controllers
 
                     if (user.Roles.Contains("Admin"))
                     {
-                        return RedirectToAction("Index","Dashboard", new {area = "Admin"});
+                        return RedirectToAction("Index","Admin");
                     }
                     else if (user.Roles.Contains("User"))
                     {

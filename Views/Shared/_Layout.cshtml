@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@inject EcomMVC.Data.Infrastructure.ICartRepository _cartRepository
+@inject Microsoft.AspNetCore.Identity.UserManager<EcomMVC.Models.User> _userManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,16 +27,33 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                             {
-                            @* Additional Navigation Items *@
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="AllItem">All Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="Cart">Shopping Cart</a>
-                            </li>
+
+                          @if (User.IsInRole("User"))
+                                {
+                                        var userId = _userManager.GetUserId(User); // Get the current user ID
+                                        var cartId = string.Empty;
+
+                                        if (!string.IsNullOrEmpty(userId))
+                                        {
+                                            var cart = _cartRepository.GetCartByUserId(userId);
+                                            if (cart != null)
+                                            {
+                                                cartId = cart.Id.ToString(); // Get the cart ID as a string
+                                            }
+                                        }
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="Index">All Products</a>
+                                    </li>
+                                   @if (!string.IsNullOrEmpty(cartId))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Purchase" asp-action="CartDetails" asp-route-cartId="@cartId">Shopping Cart</a>
+                                        </li>
+                                    }
+                                }
 
                                 @* Search Bar Visible Only When Authenticated *@
-                                <form class="d-flex" asp-area="" asp-controller="Item" asp-action="Search">
+                                <form class="d-flex" asp-area="" method="post" asp-controller="Item" asp-action="Search">
                                     <input class="form-control me-2" type="search" name="query" placeholder="Search Products" aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
                                 </form>
