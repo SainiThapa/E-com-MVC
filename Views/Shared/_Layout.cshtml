@@ -57,6 +57,15 @@
                                     <input class="form-control me-2" type="search" name="query" placeholder="Search Products" aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
                                 </form>
+
+                                @* Buyers list *@
+                                 @if (User.IsInRole("Admin"))
+                                {
+                                     <li class="nav-item">
+                                  <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserList">Buyer List</a>
+                                  </li>
+                                }
+
                                @* Profile Dropdown *@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

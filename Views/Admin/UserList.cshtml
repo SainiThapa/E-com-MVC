@@ -9,16 +9,21 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>User Id</th>
             <th>Username</th>
             <th>Email</th>
+            <th>Phone Number</th>
+
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
+                <td>@user.Id</td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
             </tr>
         }
     </tbody>
