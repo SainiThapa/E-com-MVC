@@ -31,10 +31,7 @@ public IActionResult Index()
         // If not authenticated, go to the default Home Index
         return View();
     }
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+  
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

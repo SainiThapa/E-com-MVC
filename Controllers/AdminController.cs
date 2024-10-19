@@ -14,7 +14,6 @@ namespace EcomMVC.Areas.Admin.Controllers
     {
          private readonly IOrderRepository _orderRepository;
         private readonly UserManager<User> _userManager;
-
         public AdminController(IOrderRepository orderRepository, UserManager<User> userManager)
         {
             _orderRepository = orderRepository;
